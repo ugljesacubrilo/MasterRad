@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:MasterProjekat"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+	<Grid>
+		<Menu HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="517">
+			<MenuItem Header="_File">
+				<MenuItem Header="Import XML" Command="{Binding ImportXMLCommand}" />
+			</MenuItem>
+		</Menu>
+	</Grid>
 </Window>

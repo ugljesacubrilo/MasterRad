@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace MasterProjekat.ViewModel
 {
@@ -44,8 +46,36 @@ namespace MasterProjekat.ViewModel
 
 		private void ImportXMLFile(object parameter)
 		{
-			string path = @"E:\GraphicData";
+			string path = "";
+			FolderBrowserDialog saveLocationDialog = new FolderBrowserDialog();
+
+			if (saveLocationDialog.ShowDialog() == DialogResult.OK)
+			{
+				path = saveLocationDialog.SelectedPath;
+			}
 			ReadXMLFile(path);
+		}
+
+		static IEnumerable<XElement> SimpleStreamAxis(string inputUrl, string elementName)
+		{
+			using (XmlReader reader = XmlReader.Create(inputUrl))
+			{
+				reader.MoveToContent();
+				while (reader.Read())
+				{
+					if (reader.NodeType == XmlNodeType.Element)
+					{
+						if (reader.Name == elementName)
+						{
+							XElement el = XNode.ReadFrom(reader) as XElement;
+							if (el != null)
+							{
+								yield return el;
+							}
+						}
+					}
+				}
+			}
 		}
 
 		private void InstatiateObjectsFromFile(XmlReader reader)
